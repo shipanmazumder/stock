@@ -23,6 +23,12 @@ Route::group(['middleware'=>['auth']],function() {
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/password-change', 'PasswordController@index')->name('password_change');
     Route::post('/password-change', 'PasswordController@changePassword');
+    Route::get('/supplier', 'SupplierController@index')->name("supplier");
+    Route::post('/supplier', 'SupplierController@store');
+    Route::get('/supplier/edit/{supplier_id}', 'SupplierController@edit');
+    Route::get('/supplier/delete/{supplier_id}', 'SupplierController@delete');
+    Route::get('/supplier-control/{supplier_id}', 'SupplierController@control');
+
     Route::get('/category', 'CategoryController@index')->name("category");
     Route::post('/category', 'CategoryController@store');
     Route::get('/category/edit/{category_id}', 'CategoryController@edit');

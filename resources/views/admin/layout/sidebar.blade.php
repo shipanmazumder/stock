@@ -27,6 +27,11 @@
                     <li>
                     <a href="{{ route("dashboard")}}" class="waves-effect {{set_Topmenu("dashboard")}}"><i class="md md-home"></i><span> Dashboard </span></a>
                     </li>
+                    @if (hasActive("supplier") &&hasPermission("supplier", VIEW))
+                    <li>
+                        <a href="{{ route("supplier")}}" class="waves-effect {{set_Topmenu("supplier")}}"><i class="md md-dashboard"></i><span> Supplier </span></a>
+                    </li>
+                    @endif
                     @if (hasActive("category") &&hasPermission("category", VIEW))
                     <li>
                         <a href="{{ route("category")}}" class="waves-effect {{set_Topmenu("category")}}"><i class="md md-dashboard"></i><span> Category </span></a>
