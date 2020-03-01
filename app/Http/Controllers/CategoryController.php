@@ -29,6 +29,15 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         checkPermission("category",ADD);
+         $validator = \Validator::make($request->all(),  [
+            'name' => ['required', 'string', 'max:255','unique:categories,name,'.$request->input("id")],
+        ]);
+        if ($validator->fails())
+        {
+           return redirect('category')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         if($request->input("id"))
         {
             $this->model=Category::find($request->input("id"))->first();

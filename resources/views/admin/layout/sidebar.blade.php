@@ -42,6 +42,11 @@
                         <a href="{{ route("product")}}" class="waves-effect {{set_Topmenu("product")}}"><i class="md md-dashboard"></i><span> Product </span></a>
                     </li>
                     @endif
+                    @if (hasActive("product_store") && hasPermission("product", VIEW))
+                    <li>
+                        <a href="{{ route("store")}}" class="waves-effect {{set_Topmenu("product_store")}}"><i class="md md-dashboard"></i><span> Product Store </span></a>
+                    </li>
+                    @endif
                     @if (hasActive("administrator") && hasPermission("administrator", VIEW))
                     <li class="has_sub">
                         <a href="#" class="waves-effect <?php echo set_Topmenu("administrator"); ?>"><i class="ion ion-android-sort"></i><span>Administrator </span><span class="pull-right"><i class="md md-add"></i></span></a>

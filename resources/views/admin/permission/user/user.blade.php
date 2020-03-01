@@ -188,8 +188,7 @@ Manage User
                     get_view();
                 },
                 error:function (e) {
-                     var responseMsg = JSON.parse(e.responseText);
-                        console.log(responseMsg);
+                     var responseMsg = JSON.parse(e.responseText);=
                         $.each( responseMsg, function( key, value) {
                             if(value.hasOwnProperty("email"))
                                 $.Notification.autoHideNotify('error', 'top right',value.email);

@@ -59,6 +59,11 @@
     <!-- Begin page -->
     <div id="wrapper">
 
+	<div id="overlay">
+		<div class="cv-spinner">
+			<span class="spinner"></span>
+		</div>
+	</div>
         <!-- Top Bar Start -->
         @include('admin.layout.header')
         <!-- Top Bar End -->

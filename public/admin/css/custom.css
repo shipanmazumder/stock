@@ -157,7 +157,7 @@ border-radius: 50%;
 	display: none;
 	background: rgba(0,0,0,0.6);
 }
-#user_loading{
+#product_store_loading{
 	position: absolute;
 	top: 0;
 	z-index: 9999;

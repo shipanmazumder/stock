@@ -39,6 +39,10 @@ Route::group(['middleware'=>['auth']],function() {
     Route::get('/product/edit/{product_id}', 'ProductController@edit');
     Route::get('/product/delete/{product_id}', 'ProductController@delete');
     Route::get('/product-control/{product_id}', 'ProductController@control');
+
+    Route::get('/store', 'StoreController@index')->name("store");
+    Route::get('/store/product-desc', 'StoreController@product_desc')->name("product_desc");
+    Route::post('/store', 'StoreController@add');
 });
 Route::group(['middleware'=>['auth'],'namespace'=>'Permission'],function() {
 

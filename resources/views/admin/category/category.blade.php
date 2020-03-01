@@ -28,7 +28,7 @@
                                                 <div class="form-group">
                                                     <label for="category">Category</label><small class="req">*</small>
                                                     <input required autofocus  name="name" placeholder="Category" type="text"  class="form-control" id="category">
-                                                    @error('category')
+                                                    @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>

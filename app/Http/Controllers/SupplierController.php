@@ -27,6 +27,15 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         checkPermission("supplier",ADD);
+        $validator = \Validator::make($request->all(),  [
+            'name' => ['required', 'string', 'max:255','unique:suppliers,name,'.$request->input("id")],
+        ]);
+        if ($validator->fails())
+        {
+           return redirect('supplier')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         if($request->input("id"))
         {
             $this->model=Supplier::find($request->input("id"))->first();
