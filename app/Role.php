@@ -11,6 +11,7 @@ class Role extends Model
     {
         return $this->hasMany(\App\User::class,"id");
     }
+
     public function get_permission_list($role_id)
     {
         $result=DB::table("permission_groups as PG")

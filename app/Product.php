@@ -10,4 +10,12 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Category::class);
     }
+    public function scopeActive($query)
+    {
+          return $query->where('status', 1);
+    }
+    public function scopeDeactive($query)
+    {
+          return $query->where('status', 0);
+    }
 }

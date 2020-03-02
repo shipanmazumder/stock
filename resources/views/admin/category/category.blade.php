@@ -116,8 +116,12 @@
                                                             <td>{{$sl_counter++}}</td>
                                                             <td>{{$value->name}}</td>
                                                             <td>
+                                                                @if(hasPermission("category",EDIT))
                                                                 <a title="Edit" href="{{url("category/edit/".$value['id'])}}" class=" btn btn-default btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View"><i class="fa fa-edit"></i></a>
+                                                                @endif
+                                                                @if(hasPermission("category",DELETE))
                                                                 <a onclick="return confirm('Are You Sure?')" href="{{url("category-control/".$value['id'])}}" title="{{$value['status']==1?"Enable":"Disable"}}" class="text-{{$value['status']==1?"info":"danger"}} btn btn-default  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-check-circle"></i></a>
+                                                                @endif
                                                                 @if(is_super_admin())
                                                                 <a onclick="return confirm('Are You Sure?')" href="{{url("category/delete/".$value['id'])}}"  class="text-danger btn btn-default  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-trash"></i></a>
                                                                 @endif

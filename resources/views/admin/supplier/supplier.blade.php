@@ -164,8 +164,12 @@
                                                             <td>{{$value->phone}}</td>
                                                             <td>{{$value->address}}</td>
                                                             <td>
+                                                                @if(hasPermission("supplier",EDIT))
                                                                 <a title="Edit" href="{{url("supplier/edit/".$value['id'])}}" class=" btn btn-default btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View"><i class="fa fa-edit"></i></a>
+                                                                @endif
+                                                                @if(hasPermission("supplier",DELETE))
                                                                 <a onclick="return confirm('Are You Sure?')" href="{{url("supplier-control/".$value['id'])}}" title="{{$value['status']==1?"Enable":"Disable"}}" class="text-{{$value['status']==1?"info":"danger"}} btn btn-default  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-check-circle"></i></a>
+                                                                @endif
                                                                 @if(is_super_admin())
                                                                 <a onclick="return confirm('Are You Sure?')" href="{{url("supplier/delete/".$value['id'])}}"  class="text-danger btn btn-default  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-trash"></i></a>
                                                                 @endif

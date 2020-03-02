@@ -15,6 +15,7 @@ class CreateStoresTable extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('supplier_id');
             $table->string('voucher_no')->unique();
             $table->string('picture');
             $table->integer('total_qty');
@@ -22,6 +23,8 @@ class CreateStoresTable extends Migration
             $table->date('date');
             $table->string('remarks')->nullable();
             $table->index("store_by");
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
+            $table->index("supplier_id");
             $table->timestamps();
         });
     }

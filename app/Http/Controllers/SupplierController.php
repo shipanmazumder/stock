@@ -20,7 +20,14 @@ class SupplierController extends Controller
         checkPermission("supplier",VIEW);
         $this->data['add']=true;
         $this->data['suppliers']=Supplier::paginate(10);
-        $this->data['sl_counter']=(request()->input("page")==0?1:\request()->input("page")*10);
+        if(\request()->input("page")==0||\request()->input("page")==1)
+        {
+            $page=1;
+        }
+        else{
+            $page=\request()->input("page")*10;
+        }
+        $this->data['sl_counter']=$page;
 //        dd($this->data['sl_counter']);
         return view("admin.supplier.supplier",$this->data);
     }
@@ -54,7 +61,14 @@ class SupplierController extends Controller
         $supplier=Supplier::where("id",$id)->first();
         $this->data['suppliers']=Supplier::paginate(10);
         $this->data['single']=$supplier;
-        $this->data['sl_counter']=(\request()->input("page")==0?1:\request()->input("page"))*10;
+        if(\request()->input("page")==0||\request()->input("page")==1)
+        {
+            $page=1;
+        }
+        else{
+            $page=\request()->input("page")*10;
+        }
+        $this->data['sl_counter']=$page;
         $this->data['edit']=true;
          return view("admin.supplier.supplier",$this->data);
     }

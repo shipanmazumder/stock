@@ -43,6 +43,7 @@ Route::group(['middleware'=>['auth']],function() {
     Route::get('/store', 'StoreController@index')->name("store");
     Route::get('/store/product-desc', 'StoreController@product_desc')->name("product_desc");
     Route::post('/store', 'StoreController@add');
+    Route::get('/store-view', 'StoreController@view')->name("store/view");
 });
 Route::group(['middleware'=>['auth'],'namespace'=>'Permission'],function() {
 

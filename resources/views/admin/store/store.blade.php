@@ -60,6 +60,19 @@
                                                 </div>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label for="supplier_id">Supplier</label><small class="req">*</small>
+                                                     <select id="supplier_id" required name="supplier_id" class="form-control selectpicker" data-live-search="true">
+                                                    <option value="">--Select--</option>
+                                                        @if(count($suppliers)>0)
+                                                            @foreach($suppliers as $value)
+                                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-2">
                                                 <div class="form-group">
                                                     <label for="picture">Voucher No. </label><small class="req">*</small>
@@ -167,20 +180,23 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion-test" href="#collapseOne" class="collapsed">
-                                        Product List
+                                        Product Store List
                                     </a>
                                 </h3>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-responsive table-striped table-bordered">
+                                        <table id="datatable" class="table table-responsive table-striped table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Sl</th>
-                                                    <th>Category Name</th>
-                                                    <th>Name</th>
-                                                    <th>Short Description</th>
+                                                    <th>Supplier Name</th>
+                                                    <th>Voucher No</th>
+                                                    <th>Total Qty</th>
+                                                    <th>Date</th>
+                                                    <th>Remarks</th>
+                                                    <th>Store By</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -224,7 +240,18 @@
                  }
              });
          });
-
+         get_view();
+        function get_view(){
+            $.ajax({
+                 url: "{{route("store/view")}}",
+                 type: "get",
+                 dataType: "json",
+                 data: {"product_id":""},
+                 success: function (data) {
+                     $("#datatable tbody").html(data.html);
+                 }
+             });
+        }
 
         $("#product_store").on("submit",function(e){
             e.preventDefault();
@@ -247,10 +274,11 @@
                         $("input[type=text]").val('');
 
                         $('.dropify-clear').click();
-                         $(".product_append").remove();
+                         $(".product_append_2").remove();
+                        get_view();
                     }
                     else{
-                        alert(data.message);
+                          $.Notification.autoHideNotify('error', 'top right',data.message);
                     }
                 	$("#overlay").fadeOut(300);　
                 },
@@ -280,7 +308,7 @@
 		  @else
      		var y=2;
 		  @endisset
-        var maxField = 4; //Input fields increment limitation
+        var maxField = 100; //Input fields increment limitation
         var addButton = $('#product_add_button'); //Add button selector
         var wrapper = $('#product_part'); //Input field wrapper
 

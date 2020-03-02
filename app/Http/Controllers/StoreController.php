@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Store;
+use App\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,8 @@ class StoreController extends Controller
     {
         checkPermission("product_store",VIEW);
         $this->data['add']=true;
-        $this->data['products']=Product::all();
+        $this->data['products']=Product::active()->get();
+        $this->data['suppliers']=Supplier::active()->get();
         return view("admin.store.store",$this->data);
     }
 
@@ -70,6 +72,7 @@ class StoreController extends Controller
             $this->model->picture=$picture_url;
             // $product_pic->save();
         }
+        $this->model->supplier_id=$request->input("supplier_id");
         $this->model->voucher_no=$request->input("voucher_no");
         $this->model->date=date("Y-m-d",strtotime($request->input("date")));
         $this->model->remarks=$request->input("remarks");
@@ -128,5 +131,12 @@ class StoreController extends Controller
             $desc=Product::find($product_id)->short_desc;
             return response()->json($desc,200);
         }
+    }
+
+    public function view()
+    {
+        $this->data['stores']=Store::with("user")->with("supplier")->orderBy("id","desc")->paginate(10);
+        $returnHTML = view('admin.store.store-data')->with($this->data)->render();
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
 }

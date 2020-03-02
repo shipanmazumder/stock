@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(\App\Role::class,"role_id");
     }
+
+    public function stores()
+    {
+        return $this->hasMany(\App\Store::class,"id");
+    }
 }

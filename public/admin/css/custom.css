@@ -147,6 +147,9 @@ border-radius: 50%;
 .dropify-wrapper {
     height: 34px!important;
 }
+.notifyjs-corner{
+    z-index: 9999!important;
+}
 /*loader*/
 #overlay{
 	position: fixed;
