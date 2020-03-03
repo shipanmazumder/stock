@@ -31,6 +31,11 @@ class StoreController extends Controller
 
     public function add(Request $request)
     {
+//        dd($request->all());
+        if($request->id)
+        {
+            $this->model=Store::findOrfail($request->id);
+        }
         $product_id=$request->input("product_id");
         if(!$this->is_array_unique($product_id))
         {
@@ -92,6 +97,11 @@ class StoreController extends Controller
             }
             $this->model->total_qty=$total_qty;
              $this->model->save();
+             if($request->id){
+                DB::table("store_product_lists")
+                    ->where("store_id","=",$request->id)
+                    ->delete();
+             }
             DB::table("store_product_lists")
                 ->insert($store_list_data);
                 DB::commit();
@@ -135,8 +145,66 @@ class StoreController extends Controller
 
     public function view()
     {
-        $this->data['stores']=Store::with("user")->with("supplier")->orderBy("id","desc")->paginate(10);
+         $search_key=request()->input("search_key");
+        $stores=Store::with("user")->with("supplier")->orderBy("id","desc");
+        if($search_key!='')
+        {
+            $stores=$stores->where('voucher_no', 'like', '%' . $search_key . '%');
+        }
+        $stores=$stores->paginate(10);
+        $this->data['stores']=$stores;
+
+        if(\request()->input("page")==0||\request()->input("page")==1)
+        {
+            $page=1;
+        }
+        else{
+            $page=\request()->input("page")*10;
+        }
+        $this->data['sl_counter']=$page;
         $returnHTML = view('admin.store.store-data')->with($this->data)->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
+    }
+
+    public function details_view()
+    {
+        $store_id=\request()->input("store_id");
+        $this->data['product_list']=DB::table("store_product_lists as SPL")
+            ->leftJoin("products as P","SPL.product_id","=","P.id")
+            ->where("SPL.store_id","=",$store_id)
+            ->select("SPL.*","P.name as product_name","P.short_desc")
+            ->get();
+        $this->data['store_details']=Store::find($store_id);
+
+        $returnHTML = view('admin.store.store-details')->with($this->data)->render();
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
+    }
+
+    public function edit($store_id)
+    {
+        checkPermission("product_store",EDIT);
+        $this->data['edit']=true;
+        $this->data['products']=Product::active()->get();
+        $this->data['single']=Store::findOrfail($store_id);
+        $this->data['suppliers']=Supplier::active()->get();
+        $this->data['product_list']=DB::table("store_product_lists as SPL")
+                                    ->leftJoin("products as P","SPL.product_id","=","P.id")
+                                    ->where("SPL.store_id","=",$store_id)
+                                    ->select("SPL.*","P.name as product_name","P.short_desc")
+                                    ->get();
+        return view("admin.store.store",$this->data);
+    }
+
+    public function delete($store_id)
+    {
+         checkPermission("product_store",DELETE);
+         $this->model=Store::find(\request()->store_id);
+        DB::table("store_product_lists")
+            ->where("store_id","=",\request()->store_id)
+            ->delete();
+        @\unlink($this->model->picture);
+        Store::destroy(\request()->store_id);
+        setMessage("message","success","Successfully");
+        return back();
     }
 }
